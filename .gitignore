@@ -1,0 +1,8 @@
+a_star
+*.o
+a_star.sh*
+test*
+.idea/
+run/errors
+run/outputs
+run/scripts
