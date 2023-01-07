@@ -15,7 +15,7 @@ type=maze
 algo=1
 
 current_dir=$(dirname "$(realpath -s "$0")")
-project_dir="/home/farouk.akhoun/project"
+project_dir=$(dirname "${current_dir}")
 exec_file="${project_dir}/a_star"
 
 #Clean and build executable
