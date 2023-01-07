@@ -1,15 +1,26 @@
 #!/bin/bash
 
+# Init color to print messages
+C_RESET='\033[0m'
+C_PURPLE='\033[0;35m'
+
+# infoln echos in purple color
+function infoln() {
+  echo -e "${C_PURPLE}${1}${C_RESET}"
+}
+
 seed=99
 dim_start=256
 type=maze
 algo=1
 
-current_dir="$PWD"
+current_dir=$(dirname "$(realpath -s "$0")")
 project_dir="/home/farouk.akhoun/project"
 exec_file="${project_dir}/a_star"
 
 #Clean and build executable
+infoln "Building executable.."
+module load mpich-3.2
 cd $project_dir && make clean && make
 
 outputs_dir="${current_dir}/outputs"
@@ -17,6 +28,7 @@ errors_dir="${current_dir}/errors"
 scripts_dir="${current_dir}/scripts"
 
 #Delete previous stuff
+infoln "Removing previous outputs if any.."
 rm -f ${outputs_dir}/* ${errors_dir}/* ${scripts_dir}/*
 
 #Create directories
@@ -39,6 +51,7 @@ script_file=${name}.sh
 script_path=${scripts_dir}/${script_file}
 
 #Create the script file
+infoln "Creating script for ${nb_cores} cores and a ${dim}x${dim} grid"
 cat <<EOF > $script_path
 #!/bin/bash
 
@@ -53,6 +66,8 @@ EOF
 
 #Make the file executable
 chmod +x $script_path
+
+infoln "Executing script 10 times"
 
 for i in {1..10}
 do
